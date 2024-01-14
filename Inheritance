@@ -1,0 +1,139 @@
+public class Product
+{
+    private String code,name;
+    private int price,quantity;
+
+    public Product(String code,String name,int price,int quantity){
+        this.code = code;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        
+    }
+    
+    public String toString(){
+        return "รหัส "+code+" ราคา "+price+" สินค้าปกติ "+price+" บาท ";
+    }
+    
+    public int getPrice(){
+        return price;
+    }
+    
+    public String getCode(){
+        return code;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+     public int getQuantity(){
+        return quantity ;
+    }
+    
+    public int TotalPrice(){
+        return quantity*price;
+    }
+    
+    public String toString2(){
+        return "จำนวน "+quantity+" ชิ้น รวมราคา "+TotalPrice()+" บาท";
+    }
+}
+
+
+public class DiscountProduct extends Product
+{
+    private int discountRate;
+    
+    DiscountProduct(String code,String name,int price,int discountRate,int quantity){
+        super(code,name,price,quantity);
+        this.discountRate = discountRate;
+        
+    }
+    
+    public double getDiscountRate(){
+        return discountRate;
+    
+    }
+    
+    public void  setDiscountRate(int discountRate){
+        this.discountRate = discountRate;
+    
+    }
+    
+    public int  getDiscountPrice(){
+        return getPrice()-(getPrice()*discountRate/100);
+    
+    }
+    
+    public int TotalPrice(){
+        return getQuantity()*getDiscountPrice();
+    }
+    
+    public String toString(){
+        return "รหัส "+getCode()+" ราคา "+getPrice()+" ลด "+discountRate+" % "+ getDiscountPrice()+" บาท ";
+    }
+    
+    public String toString2(){
+        return "จำนวน "+getQuantity()+" ชิ้น รวมราคา "+TotalPrice()+" บาท";
+    }
+}
+
+
+public class BuyOneGetOneProduct extends Product
+{
+    BuyOneGetOneProduct(String code,String name,int price,int quantity){
+       super(code,name,price,quantity);
+    }
+    
+    public int TotalPrice(){
+        int numberOfProduct = getQuantity()/2;
+        return getPrice()*numberOfProduct;
+    }
+    
+    public String toString(){
+        return "รหัส "+getCode()+" ราคา "+getPrice()+" แถม 1    "+getPrice()+" บาท ";
+    }
+    
+    public String toString2(){
+        return "จำนวน "+getQuantity()+" ชิ้น รวมราคา "+TotalPrice()+" บาท";
+    }
+}
+
+
+public class Demo
+{
+    public static void test() {
+       DiscountProduct p1 = new DiscountProduct("11",null,40,20,2);
+       BuyOneGetOneProduct p2 = new BuyOneGetOneProduct("33",null,30,2);
+       Product p3 = new Product("44",null,50,3);
+       
+       Product[] products = {p1,p2,p3};
+        System.out.print("สินค้า มี ");
+        for(int i =0;i<products.length;i++){
+            System.out.println(products[i]);
+        }
+        
+        System.out.print("เมื่อขาย ");
+        for(int i =0;i<products.length;i++){
+            System.out.println(products[i]+products[i].toString2());
+        }
+    }
+}
+
+
+1. จากโค้ดที่ให้ไปเป็นการเก็บข้อมูลสินค้าและการเก็บข้อมูลการซื้อสินค้าลง ใน list ให้นักศึกษา
+2. จากคลาส Product ใน Lab ให้นักศึกษาคิดออกแบบ โปรแกรมให้สามารถน ากลับมาใช้ใหม่ โดยไม่มีการเปลี่ยนแปลง
+โค้ดใดๆ ใน งาน Lab โดยให้นักศึกษาเพิ่ม Product อีกสองประเภทคือ Product ที่ลดราคา ซึ่งมีเปอร์เซ็นการลดราคา
+เก็บไว้เป็น property หนึ่ง และ Product ที่เป็นหนึ่งแถมหนึ่ง
+3. โดยข้อมูลให้เก็บลงใน arrayList ที่ได้เคย เขียนไว้แล้ว ไม่ต้องแก้ไข
+4. ในคลาส manager ให้เพิ่มข้อมูลสินค้า โดยค าสั่ง new เพิ่มสินค้า ไป Product 2 ทั้งสองประเภทลงไป
+5. ในคลาส manager ให้จ าลองการขาย โดยหากซื้อ ของปกติ ให้รวมราคาปกติ หากซื้อของลดราคา ให้แสดงการลดราคา
+และซื้อของหนึ่งแถมหนึ่ง ให้คิดจ านวนเพิ่มเป็น 1 อัน
+============================================ตัวอย่างการทดสอบ
+สินค้า มี รหัส 11 ราคา 40 ลด 20 % 32 บาท
+ รหัส 33 ราคา 30 แถม 1 30 บาท
+ รหัส 44 ราคา 50 สินค้าปกติ 50 บาท
+เมื่อขาย รหัส 11 ราคา 40 ลด 20 % 32 บาท จ านวน 2 ชิ้น รวมราคา 64 บาท
+ รหัส 33 ราคา 30 แถม 1 30 บาท จ านวน 2 ชิ้น รวมราคา 30 บาท
+ รหัส 44 ราคา 50 สินค้าปกติ 50 บาท จ านวน 3 ชิ้น รวมราคา 150 บาท
