@@ -1,0 +1,63 @@
+class Product {
+    private String id;
+    private int price;
+    private String name;
+
+    public Product(String id, int price, String name) {
+        this.id = id;
+        this.price = price;
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public int calculateTotal() {
+        return price;
+    }
+}
+
+class ProductStamp extends Product {
+    private int stamp;
+
+    public ProductStamp(String id, int price, String name, int stamp) {
+        super(id, price, name);
+        this.stamp = stamp;
+    }
+
+    public int getStamp() {
+        return stamp;
+    }
+    
+    public int calculateTotal() {
+        return super.calculateTotal() - (stamp * 2);
+    }
+}
+
+
+public class Demo{
+    public static ArrayList<ProductStamp> db = new ArrayList<>();
+    public void pay() {
+        Product[] products = {new Product ("111",100,""),new Product("123",150,"")};
+        
+        int stamp = 0;
+        for(int i=0;i<products.length;i++){
+            for(int j=0;j<db.size();j++){
+                if(db.get(j).getId().equals(products[i].getId())){
+                    stamp += products[i].getStamp();
+                }
+            }
+        }
+    }
+    public static void test() {
+        db.add(new ProductStamp("111", 100, "", 5));
+        db.add(new ProductStamp("555", 0, "", 10));
+        db.add(new ProductStamp("999", 0, "", 12));
+        db.add(new Product("123", 150, "",0));
+
+        pay();
+    }
+}
+
+///ยังไม่เสร็จ///
