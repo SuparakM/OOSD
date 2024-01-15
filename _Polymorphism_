@@ -1,0 +1,160 @@
+public class Product {
+    private String id;
+    private int price;
+    private String name;
+
+    public Product(String id, int price, String name) {
+        this.id = id;
+        this.price = price;
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public int calculateTotal() {
+        return price;
+    }
+    
+    public int calculateStamps(){
+        return 0;
+    }
+}
+
+
+public class ProductStamp extends Product {
+    private int stamp;
+
+    public ProductStamp(String id, int price, String name, int stamp) {
+        super(id, price, name);
+        this.stamp = stamp;
+    }
+
+    public int getStamp() {
+        return stamp;
+    }
+    
+    @Override
+    public int calculateTotal() {
+        return super.calculateTotal() - (stamp * 2); // Assuming stamp value is 2 each
+    }
+    
+    public int calculateStamps(){
+        return getStamp();
+    }
+}
+
+
+import java.util.ArrayList;
+
+public class DB {
+    private ArrayList<Product> products;
+    private int totalAmount = 0;
+    private int totalStamps = 0;
+
+    public DB() {
+        this.products = new ArrayList<>();
+        this.totalAmount = totalAmount;
+        this.totalStamps = totalStamps;
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+    
+    public void pay(Product product, int additionalStamps) {
+        int total = product.calculateTotal();
+        int stampsFromProduct = product.calculateStamps();
+
+        // เงื่อนไขสำหรับแสตมป์จากการซื้อสินค้าตามเงื่อนไข
+        if (product.getId().equals("111")) {
+            stampsFromProduct += Math.max(5, additionalStamps);
+        } else if (product.getId().equals("999")) {
+            stampsFromProduct += Math.max(10, additionalStamps);
+        } else if (product.getId().equals("555")) {
+            stampsFromProduct += Math.max(12, additionalStamps);
+        } else {
+            // ถ้าไม่ใช่สินค้าที่มีเงื่อนไข 50 บาท ให้คำนวณแสตมป์จากครบทุก 50 บาท
+            int additionalStampsFromTotal = total / 50;
+            stampsFromProduct += additionalStampsFromTotal;
+        }
+
+        totalAmount += total;
+        totalStamps += stampsFromProduct;
+    
+        System.out.println("รหัส " + product.getId() + "    :   ราคา " + total);
+        
+    }
+
+    public void printTotal() {
+        System.out.println("จะได้ ราคา " + totalAmount + " แสตมป์ " + totalStamps + " ดวง");
+    }
+
+    public Product getProductById(String productId) {
+        for (Product product : products) {
+            if (product.getId().equals(productId)) {
+                return product;
+            }
+        }
+        return null; // หากไม่พบสินค้าที่มี ID ตรงกับที่ระบุ
+    }
+}
+
+
+import java.util.Scanner;
+
+public class Demo{
+    public static void initDB(DB db) {
+        db.addProduct(new Product("111", 100, "Product A"));
+        db.addProduct(new Product("123", 150, "Product B"));
+        db.addProduct(new ProductStamp("11", 300, "ProductStamp A", 3));
+        db.addProduct(new ProductStamp("111", 30, "ProductStamp B", 4));
+        db.addProduct(new Product("555", 50, "Product C"));
+        db.addProduct(new Product("999", 12, "Product D"));
+    }
+    
+    public static void main(String[] args) {
+        DB newDB = new DB();
+        initDB(newDB);
+        
+        Scanner scanner = new Scanner(System.in);
+        boolean continueShopping = true;
+
+        while (continueShopping) {
+            System.out.print("รหัส ");
+            String productCode = scanner.nextLine();
+            
+            System.out.print("  :   ราคา ");
+            int productPrice = scanner.nextInt();
+            scanner.nextLine(); // อ่านค่า new line จากการป้อนราคา
+
+            // ส่งค่า 0 เพื่อบอกว่าไม่มีรายการซื้อเพิ่มเติม
+            newDB.pay(newDB.getProductById(productCode), 0);
+
+            System.out.print("ต้องการทำรายการเพิ่มเติมหรือไม่? (y/n): ");
+            String choice = scanner.nextLine();
+
+            continueShopping = choice.equalsIgnoreCase("y");
+        }
+        
+        // แสดงผลรวมทั้งหมด
+        newDB.printTotal();
+    }
+}
+
+คำถาม  ให้นักศึกษาเขียนอธิบายว่าส่วนไหนของโค้ดเป็นการทำ polymorphism และส่วนไหนที่่เป็นการทำ dynamic binding
+ในโค้ดที่แก้ไขแล้ว, ส่วนที่เป็นการทำ Polymorphism และ Dynamic Binding คือ:
+
+1. *Polymorphism:*
+   - การใช้ Polymorphism เกิดขึ้นในคลาส Product และ ProductStamp.
+   - เมื่อเรียกใช้ calculateStamps() จากอ็อบเจกต์ของ Product, 
+สามารถเรียกใช้ calculateStamps() จาก ProductStamp ได้โดยไม่ต้องรู้ถึงประเภทของอ็อบเจกต์นั้น.
+
+2. *Dynamic Binding:*
+   - Dynamic Binding เกิดขึ้นในเมทอด calculateStamps() ที่ถูก Override ในคลาส ProductStamp.
+   - เมื่อมีการเรียกใช้ calculateStamps() ใน DB, ระบบจะตรวจสอบว่า product เป็น Product 
+หรือ ProductStamp และจะเรียกใช้เมทอดที่ถูก Override ในคลาสที่ถูกสร้างขึ้นจริงขณะทำงาน.
+
+การใช้ Polymorphism และ Dynamic Binding ช่วยทำให้โค้ดสามารถปรับเปลี่ยนพฤติกรรมของเมทอดต่าง ๆ 
+ตามประเภทของอ็อบเจกต์ที่ใช้งานได้อย่างยืดหยุ่นและมีความยั่งยืนในการเพิ่มหรือปรับเปลี่ยนคลาสในอนาคต.
