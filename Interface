@@ -1,0 +1,75 @@
+public interface Bicycle
+{
+    void changeCadence(int newValue);
+    void changeGear(int newValue);
+    void speedUp(int increment);
+    void applyBrakes(int decrement);
+}
+
+
+public class MyBicycle implements Bicycle 
+{
+    private int cadence;
+    private int gear;
+    private int speed;
+
+    public void changeCadence(int newValue) {
+        System.out.println("Changing cadence to " + newValue);
+        cadence = newValue;
+    }
+
+    public void changeGear(int newValue) {
+        System.out.println("Changing gear to " + newValue);
+        gear = newValue;
+    }
+
+    public void speedUp(int increment) {
+        System.out.println("Speeding up by " + increment);
+        speed = speed + increment;
+    }
+
+    public void applyBrakes(int decrement) {
+        System.out.println("Applying brakes by " + decrement);
+        speed = speed - decrement;
+    }
+}
+
+
+public class BicycleTest
+{
+    public static void test() {
+        Bicycle B = new MyBicycle();
+        B.changeCadence(15);
+        B.changeGear(12);
+        B.speedUp(4);
+        B.applyBrakes(2);
+    }
+}
+
+
+Lab Interface
+
+วัตถุประสงค์ 
+
+1. เพื่อให้ศึกษาการสร้างและการใช้งาน Interface
+
+ตอนที่ 1
+
+1. จาก Interface ที่ก าหนดให้ ให้นักศึกษา สร้างจักรยาน เป็นของตัวเองตามที่ตัวเองออกแบบ โดยให้มี 
+interface ที่แสดงตามโค้ดด้านล่าง ทุกขั้นตอนแสดงให้เห็นว่ามีการท างาน โดนการพิมพ์ชือ method 
+และ/หรือ parameter ที่รับ
+
+interface Bicycle {
+ // wheel revolutions per minute
+ void changeCadence(int newValue);
+ void changeGear(int newValue);
+ void speedUp(int increment);
+ void applyBrakes(int decrement);
+}
+
+โดย main ทำงานดังนี้
+ Bicycle B = new MyBicycle();
+ B.changeCadence( 15 );
+ B.changeGear(12);
+ B.speedUp(4);
+ B.applyBrakes(2);
