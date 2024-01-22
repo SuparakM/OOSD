@@ -1,0 +1,99 @@
+public class FoodItem
+{
+    private String name;
+    
+    public FoodItem(String name){
+        this.name = name;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public void cook(){
+        System.out.println("Cooking "+name);
+    }
+}
+
+
+public class FriedRice extends FoodItem
+{
+    public FriedRice(){
+        super("Fried Rice");
+    }
+    
+    public void cook(){
+        System.out.println("Cooking Fried Rice");
+    }
+}
+
+
+public class BasilChickenRice extends FoodItem
+{
+    public BasilChickenRice(){
+        super("Basil Chicken Rice");
+    }
+    
+    public void cook(){
+        System.out.println("Cooking Basil Chicken Rice");
+    }
+}
+
+
+
+public class Restaurant {
+    public void serveFood(String customerName, FoodItem food1, FoodItem food2) {
+        System.out.println("Order for " + customerName + ":");
+        System.out.println("Serving " + food1.getName());
+       
+        if (food1 instanceof FriedRice) {
+            System.out.println("Special handling for Fried Rice");
+        } else if (food1 instanceof BasilChickenRice) {
+            System.out.println("Special handling for Basil Chicken Rice");
+        }
+
+        food1.cook();
+
+        if (food2 != null) {
+            System.out.println("Serving " + food2.getName());
+
+            if (food2 instanceof FriedRice) {
+                System.out.println("Special handling for Fried Rice");
+            } else if (food2 instanceof BasilChickenRice) {
+                System.out.println("Special handling for Basil Chicken Rice");
+            }
+
+            food2.cook();
+            System.out.println("Discount applied for ordering two items!");
+        }
+
+        double totalPrice = calculateTotalPrice(food1, food2);
+        System.out.println("Total Price: $" + totalPrice);
+    }
+
+    private double calculateTotalPrice(FoodItem food1, FoodItem food2) {
+        double basePrice = 20.0; // Assuming a base price for each dish
+        double discount = (food2 != null) ? 15.0 : 0.0; // Discount for ordering two items
+
+        return basePrice + discount;
+    }
+}
+
+
+public class Demo {
+    public static void test() {
+        Restaurant restaurant = new Restaurant();
+        
+        FoodItem friedRice = new FriedRice();
+        FoodItem basilChickenRice = new BasilChickenRice();
+
+        // Order one item
+        restaurant.serveFood("John Doe", friedRice, null);
+
+        // Order two items (discount applied)
+        restaurant.serveFood("Mod", friedRice, basilChickenRice);
+    }
+}
+
+
+คิดโจทย์เองจ้าาาาาาาา
