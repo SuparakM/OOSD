@@ -1,0 +1,117 @@
+public class Watch {
+    private String currentTime;
+
+    public Watch() {
+        this.currentTime = "";
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public String getCurrentTime() {
+        return this.currentTime;
+    }
+
+    public void displayTime() {
+        System.out.println("Smartwatch Current Time: " + this.currentTime);
+    }
+}
+
+public class HeartRateMonitor {
+    private int heartRate;
+
+    public HeartRateMonitor() {
+        this.heartRate = 0;
+    }
+
+    public void setHeartRate(int heartRate) {
+        this.heartRate = heartRate;
+    }
+
+    public int getHeartRate() {
+        return this.heartRate;
+    }
+}
+
+public class StepCounter {
+    private int steps;
+
+    public StepCounter() {
+        this.steps = 0;
+    }
+
+    public void setSteps(int steps) {
+        this.steps = steps;
+    }
+
+    public int getSteps() {
+        return this.steps;
+    }
+}
+
+public class MandM {
+    private Watch watch;
+    private HeartRateMonitor heartRateMonitor;
+    private StepCounter stepCounter;
+
+    // Composition
+    public MandM() {
+        this.watch = new Watch();
+        this.heartRateMonitor = new HeartRateMonitor();
+        this.stepCounter = new StepCounter();
+    }
+
+    // Aggregation
+    public MandM(Watch watch, HeartRateMonitor heartRateMonitor, StepCounter stepCounter) {
+        this.watch = watch;
+        this.heartRateMonitor = heartRateMonitor;
+        this.stepCounter = stepCounter;
+    }
+
+    public void displayData() {
+        watch.displayTime();
+        System.out.println("Heart Rate: " + heartRateMonitor.getHeartRate());
+        System.out.println("Steps Count: " + stepCounter.getSteps());
+    }
+}
+
+public class Smartwatch {
+    public void  receiveWearableDeviceData(MandM mandm){
+        mandm.displayData();
+    }
+}
+
+public class Smartphone {
+    public void displayWearableDeviceData(MandM mandm) {
+        mandm.displayData();
+    }
+}
+
+public class Demo {
+    public static void test() {
+        // Create objects for testing
+        Watch watch = new Watch();
+        watch.setCurrentTime("10:00 AM");
+
+        HeartRateMonitor heartRateMonitor = new HeartRateMonitor();
+        heartRateMonitor.setHeartRate(80);
+
+        StepCounter stepCounter = new StepCounter();
+        stepCounter.setSteps(5000);
+
+        // Inheritance
+        MandM mandm = new MandM(watch, heartRateMonitor, stepCounter);
+
+        Smartwatch smartwatch = new Smartwatch();
+        Smartphone smartphone = new Smartphone();
+
+        System.out.println("SmartWatch");
+        // Receive and display data from WearableDevice using Smartphone
+        smartwatch.receiveWearableDeviceData(mandm);
+
+        System.out.println("SmartPhone");
+        // Display data from WearableDevice using SmartPhone
+        smartphone.displayWearableDeviceData(mandm);
+    }
+}
